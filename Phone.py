@@ -10,7 +10,7 @@ class Phone:
     
     @staticmethod
     def is_valid_phone(phone: str) -> bool:
-        return bool(re.fullmatch(r'\d{3}', phone))
+        return bool(re.fullmatch(r'\d{10}', phone))
     
     @property
     def phone(self) -> str:
