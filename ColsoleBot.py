@@ -1,6 +1,8 @@
 from enum import Enum
 from AddressBook import AddressBook
 from Birthday import Birthday
+from AddressBookFileManager import AddressBookFileManager
+from Config import Config
 from Name import Name
 from NewRecord import NewRecord
 from Phone import Phone
@@ -125,6 +127,9 @@ def parse_input(user_input: str):
     return cmd, args
 
 def main():
+    file_manager = file_manager_factory()
+    load_address_book(file_manager)
+    
     print("Welcome to the assistant bot!")
     while True:
         user_input = input(f"Enter a command ( like { ', '.join(values[0] for values in commands.values())})")
@@ -175,6 +180,23 @@ def main():
         
         print("\n")
 
+    save_address_book(file_manager)
+
+@input_error
+def save_address_book(file_manager):
+    file_manager.save_data(addressBook.data)
+
+@input_error
+def load_address_book(file_manager):
+    addressBookData = file_manager.load_data()
+    addressBook.data = addressBookData
+    return file_manager
+
+@input_error
+def file_manager_factory():
+    config = Config()
+    file_manager = AddressBookFileManager(config)
+    return file_manager
 
 if __name__ == "__main__":
     main()
